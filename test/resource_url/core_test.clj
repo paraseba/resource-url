@@ -38,3 +38,31 @@
   (testing "with anchor"
     (is (= (user-path {:id :foo} :anchor :my-id "sort" "the recent" :value 1) "users/foo/?value=1&sort=the+recent#my-id"))))
 
+
+
+(polymorphic-url url-for-type by-type)
+(polymorphic-url url-for-key (by-member :dispatch))
+
+(defrecord Post [id url-slug dispatch])
+(defrecord Comment [id dispatch])
+
+(named-url post-path "posts" :url-slug)
+(named-url comment-path "posts" :url-slug "comments" :id)
+
+(resource-url url-for-type Post post-path)
+(resource-url url-for-type Comment comment-path)
+
+(resource-url url-for-key 1 post-path)
+(resource-url url-for-key 2 comment-path)
+
+
+(deftest resources-urls
+  (let [p (Post. 1 "the-post" 1)
+        c (Comment. 2 2)]
+    (is (= (url-for-type p) "posts/the-post"))
+    (is (= (url-for-key  p) "posts/the-post"))
+    (is (= (url-for-type [p c]) "posts/the-post/comments/2"))
+    (is (= (url-for-key  [p c]) "posts/the-post/comments/2"))
+    (is (= (url-for-type [p c] :key :value :anchor :the-anchor) "posts/the-post/comments/2/?key=value#the-anchor"))
+    (is (= (url-for-key  [p c] :key :value :anchor :the-anchor) "posts/the-post/comments/2/?key=value#the-anchor"))))
+

@@ -42,3 +42,20 @@
   `(defn ~name [& args#]
      (apply url (vector ~@parts) args#)))
 
+(defmacro polymorphic-url [& args]
+  `(defmulti ~@args))
+
+(defmacro resource-url [poly-function disp-value f]
+  `(defmethod ~poly-function ~disp-value [obj# & args#]
+     (let [args# (if (vector? obj#) (concat obj# args#) (cons obj# args#))]
+       (apply ~f args#))))
+
+(defn dispatch [f]
+  (fn [obj & args]
+    (f
+       (if (vector? obj)
+         (last obj)
+         obj))))
+
+(def  by-type (dispatch type))
+(defn by-member [mem] (dispatch mem))
