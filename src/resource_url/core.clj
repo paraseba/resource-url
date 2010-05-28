@@ -45,10 +45,15 @@
 (defmacro polymorphic-url [& args]
   `(defmulti ~@args))
 
-(defmacro resource-url [poly-function disp-value f]
-  `(defmethod ~poly-function ~disp-value [obj# & args#]
+(defn- def-url-method [multi dispatch f]
+  `(defmethod ~multi ~dispatch [obj# & args#]
      (let [args# (if (vector? obj#) (concat obj# args#) (cons obj# args#))]
        (apply ~f args#))))
+
+(defmacro resource-url [poly-function & pairs]
+  `(do
+     ~@(map #(apply def-url-method poly-function %) (partition 2 pairs))))
+
 
 (defn dispatch [f]
   (fn [obj & args]

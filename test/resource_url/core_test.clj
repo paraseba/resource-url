@@ -52,9 +52,9 @@
 (resource-url url-for-type Post post-path)
 (resource-url url-for-type Comment comment-path)
 
-(resource-url url-for-key 1 post-path)
-(resource-url url-for-key 2 comment-path)
-
+(resource-url url-for-key
+  1 post-path
+  2 comment-path)
 
 (deftest resources-urls
   (let [p (Post. 1 "the-post" 1)
