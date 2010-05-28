@@ -1,0 +1,121 @@
+h1. resource-url
+
+A "clojure":http://clojure.org/ library for generating URLs.
+
+h2. Installation
+
+The easiest way to install resource-url is by using Leiningen. Just add the following dependency to your project.clj file:
+
+<pre>
+<code>
+    [resource-url "0.1.0"]
+</code>
+</pre>
+
+h2. Usage
+
+You define functions that will return URLs. The simplest case is
+
+<pre>
+<code>
+    (named-url home-path "home" "en")
+</code>
+</pre>
+
+This will create a function named <code>home-path</code> that will return the path "/home/en".
+
+You can pass additional URL parameters to <code>home-path</code> 
+
+
+<pre>
+<code>
+    (home-path :order "by date" :page 4 :anchor "post-list")
+</code>
+</pre>
+
+This would expand to "/home/en/?order=by+date&page=4#post-list"
+
+But the real power starts when you use functions as path elements:
+
+<pre>
+<code>
+    (named-url picture-path "users" :url-slug "pictures" :id)
+</code>
+</pre>
+
+Then you could user <code>picture-path</code> in the following way:
+
+<pre>
+<code>
+    (def user {:id 4, :name "John Doe", :url-slug "john-doe"})
+    (def picture {:id 45, :path "public/images/image.jpg"})
+
+    (picture-path [user picture] :thumb :big)
+</code>
+</pre>
+
+That would expand into "/users/john-doe/pictures/45".
+
+The first argument to <code>picture-path</code> is the object that will be used
+to expand the function parts of the URL template, if more than one, pass a vector.
+
+Finally, you can create polymorphic URL generation functions, that will map to a
+different path depending on the received object. First you need to create the
+polymorphic function:
+
+<pre>
+<code>
+    (polymorphic-url url-for by-type)
+</code>
+</pre>
+
+This will define a function named <code>url-for</code> that will dispatch to
+different path templates based on object type. Then you declare to which path
+each object type corresponds
+
+<pre>
+<code>
+    (named-url user-path "users" :url-slug)
+    (named-url picture-path "users" :url-slug "pictures" :id)
+
+    (defrecord User [id url-slug name])
+    (defrecord Picture [id path])
+
+    (resource-url url-for
+      User user-path
+      Picture picture-path)
+</code>
+</pre>
+
+Now <code>url-for</code> will dispatch to the corresponding URL generation
+function:
+
+<pre>
+    (def user (User. 1 "john-doe" "John Doe"))
+    (def pict (Picture. 2 "/tmp/pict.jpg"))
+
+    (url-for user)  ;will generate /users/john-doe
+    (url-for [user pict])  ;will generate /users/john-doe/pictures/2
+<code>
+
+Notice that <code>by-type</code> dispatch based on object type or last element
+type if you pass a vector.
+
+There is another predefined dispatch <code>by-member</code> which dispatch
+using a keyword: (polymorphic-url url-for (by-member :tag))
+
+or you can create your own dispatchers like in:
+
+<pre>
+<code>
+    (polymorphic-url url-for (dispatch my-dispatch)
+</code>
+</pre>
+
+In fact, <code>by-member</code> exists only to increase readability:
+
+<pre>
+<code>
+    (defn by-member [mem] (dispatch mem))
+</code>
+</pre>
