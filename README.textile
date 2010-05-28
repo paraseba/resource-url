@@ -54,10 +54,14 @@ Then you could user <code>picture-path</code> in the following way:
 </code>
 </pre>
 
-That would expand into "/users/john-doe/pictures/45".
+That would expand into "/users/john-doe/pictures/45/?thumb=big".
 
 The first argument to <code>picture-path</code> is the object that will be used
 to expand the function parts of the URL template, if more than one, pass a vector.
+
+Notice that in <code>named-url</code> call <code>:url-slug</code> and <code>:id</code>
+are functions, since in clojure keywords can be used as functions. But you could
+use any function you want.
 
 Finally, you can create polymorphic URL generation functions, that will map to a
 different path depending on the received object. First you need to create the
@@ -91,17 +95,19 @@ Now <code>url-for</code> will dispatch to the corresponding URL generation
 function:
 
 <pre>
+<code>
     (def user (User. 1 "john-doe" "John Doe"))
     (def pict (Picture. 2 "/tmp/pict.jpg"))
 
     (url-for user)  ;will generate /users/john-doe
     (url-for [user pict])  ;will generate /users/john-doe/pictures/2
-<code>
+</code>
+</pre>
 
-Notice that <code>by-type</code> dispatch based on object type or last element
+Notice that <code>by-type</code> dispatches based on object type or last element
 type if you pass a vector.
 
-There is another predefined dispatch <code>by-member</code> which dispatch
+There is another predefined dispatch <code>by-member</code> which dispatches
 using a keyword: (polymorphic-url url-for (by-member :tag))
 
 or you can create your own dispatchers like in:
