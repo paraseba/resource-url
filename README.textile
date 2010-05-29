@@ -2,6 +2,8 @@ h1. resource-url
 
 A "clojure":http://clojure.org/ library for generating URLs.
 
+Documentation by autodoc: http://paraseba.github.com/resource-url/
+
 h2. Installation
 
 The easiest way to install resource-url is by using Leiningen. Just add the following dependency to your project.clj file:
@@ -14,7 +16,7 @@ The easiest way to install resource-url is by using Leiningen. Just add the foll
 
 h2. Usage
 
-You define functions that will return URLs. The simplest case is
+You define functions that will return URLs based on a template. The simplest case is
 
 <pre>
 <code>
@@ -33,9 +35,9 @@ You can pass additional URL parameters to <code>home-path</code>
 </code>
 </pre>
 
-This would expand to "/home/en/?order=by+date&page=4#post-list"
+This will expand to <code>/home/en/?order=by+date&page=4#post-list</code>
 
-But the real power starts when you use functions as path elements:
+But the real power starts when you use functions as path elements in the template:
 
 <pre>
 <code>
@@ -54,16 +56,16 @@ Then you could user <code>picture-path</code> in the following way:
 </code>
 </pre>
 
-That would expand into "/users/john-doe/pictures/45/?thumb=big".
+That will expand into <code>/users/john-doe/pictures/45/?thumb=big"</code>.
 
 The first argument to <code>picture-path</code> is the object that will be used
 to expand the function parts of the URL template, if more than one, pass a vector.
 
-Notice that in <code>named-url</code> call <code>:url-slug</code> and <code>:id</code>
+Notice that in <code>named-url</code> call, <code>:url-slug</code> and <code>:id</code>
 are functions, since in clojure keywords can be used as functions. But you could
 use any function you want.
 
-Finally, you can create polymorphic URL generation functions, that will map to a
+Finally, you can create polymorphic URL generating functions, that will map to a
 different path depending on the received object. First you need to create the
 polymorphic function:
 
@@ -91,7 +93,7 @@ each object type corresponds
 </code>
 </pre>
 
-Now <code>url-for</code> will dispatch to the corresponding URL generation
+Now <code>url-for</code> will dispatch to the corresponding URL generating
 function:
 
 <pre>
@@ -99,8 +101,8 @@ function:
     (def user (User. 1 "john-doe" "John Doe"))
     (def pict (Picture. 2 "/tmp/pict.jpg"))
 
-    (url-for user)  ;will generate /users/john-doe
-    (url-for [user pict])  ;will generate /users/john-doe/pictures/2
+    (url-for user)         ; will generate /users/john-doe
+    (url-for [user pict])  ; will generate /users/john-doe/pictures/2
 </code>
 </pre>
 
@@ -108,7 +110,7 @@ Notice that <code>by-type</code> dispatches based on object type or last element
 type if you pass a vector.
 
 There is another predefined dispatch <code>by-member</code> which dispatches
-using a keyword: (polymorphic-url url-for (by-member :tag))
+using a keyword: <code>(polymorphic-url url-for (by-member :tag))</code>
 
 or you can create your own dispatchers like in:
 
