@@ -1,0 +1,268 @@
+<html>
+  <head>
+    <title>resource-url.core API reference (resource-url)</title>
+    <link href="static/favicon.png" rel="icon" />
+    <link href="static/favicon.png" rel="shortcut icon" />
+    <link media="all" type="text/css" href="static/clojure.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/wiki.css" rel="stylesheet" />
+    <link media="all" type="text/css" href="static/internal.css" rel="stylesheet" />
+    <!-- TODO: are we using these (from clojure.org)? If so, add the files -->
+    <script src="file/view/code_highlighter.js" type="text/javascript"></script>
+    <script src="file/view/clojure.js" type="text/javascript"></script>
+    <style>.menuWrapper{height: 36px;}</style>
+    <!--[if lte IE 6]>
+    <link rel="stylesheet" href="http://www.wikispaces.com/_/2009051601/s/internal_ie.css" type="text/css" />
+    <![endif]-->
+  </head>
+<!--
+This document was auto-generated from the source by the clojure autodoc system.
+To report errors or ask questions about the overall documentation structure, formatting,
+etc., contact Tom Faulhaber (google mail name: tomfaulhaber).
+For errors in the documentation of a particular namespace, contact the author of that
+namespace.
+-->
+  <body>
+    <div id="AllContentContainer">
+      <div id="Header">
+	<a id="Logo" href="index.html"><img alt="Clojure" height="100" width="100" src="static/clojure-icon.gif" /></a>
+	<h1><a title="page header title" id="page-header" href="index.html">resource-url</a></h1>
+      </div>
+      <div id="leftcolumn"><div style="text-align: center;"></div>
+<div class="menu">
+  <div class="WikiCustomNav WikiElement wiki">
+    <a class="wiki_link" href="index.html">Overview</a><br />
+    <a class="wiki_link" href="api-index.html">API Index</a><br />
+    <a class="wiki_link" href="#">Namespaces:</a>
+    <ul id="left-sidebar-list">
+      <li><a href="resource-url.core-api.html" class="wiki_link">resource-url.core</a></li>
+    </ul>
+  </div>
+</div>
+</div>
+      <div id="rightcolumn">
+	<div id="Content">
+	  <div class="contentBox"><div class="innerContentBox">
+              <div id="content_view" class="wiki wikiPage">
+                <div id="right-sidebar"><div id="toc">
+  <h1 class="nopad">Table of Contents</h1>
+  <div style="margin-left: 1em;" class="toc-section">
+    <a href="#toc0">Overview</a>
+    <div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/by-member">by-member</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/by-type">by-type</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/dispatch">dispatch</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/named-url">named-url</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/polymorphic-url">polymorphic-url</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/resource-url">resource-url</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/url">url</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/url-encode-map">url-encode-map</a>
+    </div><div style="margin-left: 1em;" class="toc-entry">
+      <a href="#resource-url.core/url-encode-str">url-encode-str</a>
+    </div>
+    <br />
+  </div>
+</div>
+</div>
+                <div id="content-tag"><h1 id="overview">API for <span id="namespace-name">resource-url.core</span></h1>
+by <span id="author">Unknown</span><br />
+<br />Usage:
+<pre>
+(ns your-namespace
+  (:require <span id="long-name">resource-url.core</span>))
+</pre><pre>
+</pre><h2>Overview</h2>
+<pre id="namespace-docstr">Create functions to generate URL paths.
+
+Main function is named-url, used to define new functions. You can create
+polymorphic functions using polymorphic-url and resource-url.</pre>
+<br />
+<h2>Public Variables and Functions</h2>
+<div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/by-member">by-member</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (by-member mem)
+</pre>
+  <pre id="var-docstr">Helper function to dispatch polymarphic URL generation functions based on
+"members" of the object. Use in combination with polymorphic-url.
+
+For instance given (def user {:role :admin, :id 5, :name "John")
+you could use (by-member :role)</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/by-type">by-type</h2>
+  <span id="var-type">var</span><br />
+  <pre id="var-usage"></pre>
+  <pre id="var-docstr">Dispatcher by clojure.core/type for polymorphic-url
+
+Dispatches on the type of the object passed, or the type of the last element
+if the object is a vector</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/dispatch">dispatch</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (dispatch f)
+</pre>
+  <pre id="var-docstr">Helper to create dispatcher functions for polymorphic-url.
+
+f is a function that receives the last mapped object and returns the dispatch value.</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/named-url">named-url</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (named-url name &amp; parts)
+</pre>
+  <pre id="var-docstr">Defines a function with the given name which returns a URL according to
+a template and after doing substitutions and encoding.
+
+parts is a series of strings and functions with define the URL template.
+When the defined function is called, each parts string will be generated
+in the URL as is. Each function will be called on the arguments passed.
+
+Extra parameters can be given as name/value pairs, and an special :anchor value
+can be passed too
+
+Example:
+
+  (named-url user-path "users" :id)
+
+  (user-path {:id 20} :lang :en :anchor :profile)
+
+  will generate /users/20/?lang=en#profile
+
+Notice that in the call to named-url :id is just a function (since keywors
+can be used this way), you could use your own functions instead.
+
+You can also generate nested URLs adding more parts and passing several
+objets in a vector:
+
+  (named-url picture-path "users" :url-slug "pictures" :id)
+
+  (picture-path [{:url-slug "john-doe"} {:id 1}] :lang :en :anchor :profile)
+
+  will generate /users/john-doe/pictures/1/?lang=en#profile</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/polymorphic-url">polymorphic-url</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (polymorphic-url &amp; args)
+</pre>
+  <pre id="var-docstr">Defines a polymorphic URL generation function.
+
+Use in combination with resource-url. Receives the same arguments that
+clojure.core/defmulti</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/resource-url">resource-url</h2>
+  <span id="var-type">macro</span><br />
+  <pre id="var-usage">Usage: (resource-url f &amp; args)
+</pre>
+  <pre id="var-docstr">Maps a resource type to a URL generating function.
+
+f is the name of a polymorphic function created with
+polymorphic-url. args is a sequence of dispatch-value/url-function.
+Url-functions should be created using named-url.
+
+Example:
+
+(polymorphic-url url-for type) ; this creates url-for polymorphic function
+                               ; url-for will dispatch to url generating functions
+                               ; based on type of it's argument
+
+; we create our "types"
+(defrecord User [id])
+(defrecord Post [id])
+
+; we define URL templates for each type
+(named-url user-path "users" :id)
+
+; posts are nested inside their owners
+(named-url post-path "users" :id "posts" :id)
+
+; we map each type to it's URL generating function
+(resource-url url-for
+  Post post-path
+  User user-path)
+
+Then you could do
+
+(url-for (User. 1)) ; will generate /users/1
+(url-for [(User. 1) (Post. 5)] :page 1) ; will generate /users/1/posts/5/?page=1</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/url">url</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (url parts &amp; objs)
+</pre>
+  <pre id="var-docstr">Generate a URL based on a template and substitution objects.
+
+ parts is collection of strings and functions, objs will be used in order as
+ argument for each function part.
+
+ Extra parameters can be given as name/value pairs, and an special :anchor value
+ can be passed too.
+
+ Users don't normally call this function</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/url-encode-map">url-encode-map</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (url-encode-map m)
+</pre>
+  <pre id="var-docstr">Encodes a map of parameters in a format valid for URLs.
+
+Calls url-encode-map on all keys and values, and separates all name/value pairs
+with a '&amp;' character</pre>
+  
+</div><div id="var-entry">
+  <br />
+  <hr />
+  <h2 id="resource-url.core/url-encode-str">url-encode-str</h2>
+  <span id="var-type">function</span><br />
+  <pre id="var-usage">Usage: (url-encode-str s)
+</pre>
+  <pre id="var-docstr">Encode a string according to the application/x-www-form-urlencoded MIME format
+
+Calls clojure.contrib.string/as-str on it's argument</pre>
+  
+</div>
+
+
+</div>
+              </div>
+            </div>
+          </div>
+	</div>
+	<div id="foot">
+	  <div style="text-align: center;" id="copyright">No copyright info </div>
+	</div>
+      </div>
+      <div id="DesignedBy">Logo &amp; site design by <a title="Visit Tom Hickey's website." href="http://www.tomhickey.com">Tom Hickey</a>.<br />
+      Clojure auto-documentation system by Tom Faulhaber.</div>
+    </div>
+    <!-- /AllContentContainer -->
+  </body>
+
+</html>
